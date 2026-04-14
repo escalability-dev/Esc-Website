@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>E Scalability | Global Empire Builder</title>
+    
+    <title>Marketplace Growth Simulator | Strategic Consultancy</title>
+    <meta name="description" content="Execute high-velocity e-commerce growth strategies. Scale assets, optimize buybox logic, and dominate global marketplaces.">
+    <meta name="keywords" content="ecommerce growth, marketplace strategy, scale assets, consultancy simulator">
+    
+    <link rel="icon" type="image/png" href="https://img.icons8.com/external-line-gradient-kash08/64/external-Growth-stock-market-line-gradient-kash08.png">
+
     <style>
         :root {
             --primary: #6366f1;
@@ -14,12 +20,12 @@
             --success: #22c55e;
         }
 
-        /* Prevent selection and pull-to-refresh */
+        /* Prevent selection and blue-click-box */
         * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             user-select: none; 
             -webkit-user-select: none;
             touch-action: manipulation;
@@ -36,6 +42,7 @@
                 radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
         }
 
+        /* STRATEGIC TICKER */
         #market-ticker {
             position: fixed;
             top: 0;
@@ -63,6 +70,7 @@
             100% { transform: translate3d(-200%, 0, 0); }
         }
 
+        /* SIDEBAR */
         #sidebar {
             width: 320px;
             background: rgba(17, 24, 39, 0.9);
@@ -92,13 +100,12 @@
             background: rgba(99, 102, 241, 0.15);
         }
 
-        .upgrade-card:active:not(.disabled) { transform: scale(0.98); }
-
         .upgrade-card.disabled { opacity: 0.15; cursor: not-allowed; }
 
         .upgrade-name { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 4px; color: #fff; }
         .upgrade-cost { font-size: 0.75rem; color: var(--success); font-family: monospace; }
 
+        /* GAME AREA */
         #game-area {
             flex: 1;
             display: flex;
@@ -133,14 +140,14 @@
             justify-content: center;
             font-size: 7rem;
             cursor: pointer;
-            transition: transform 0.05s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transition: transform 0.05s;
             box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
             z-index: 5;
         }
 
         #main-clicker img {
             width: 140px;
-            pointer-events: none; /* Prevents dragging the image */
+            pointer-events: none; /* Disables dragging */
         }
 
         #main-clicker:active { transform: scale(0.92); }
@@ -200,6 +207,7 @@
 
         input { width: 100%; padding: 15px; margin: 10px 0; background: #030712; border: 1px solid #1f2937; color: white; border-radius: 4px; outline: none; font-size: 1rem; }
         .btn-submit { width: 100%; padding: 16px; background: var(--primary); border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 4px; margin-top: 10px; }
+        .btn-submit:hover { background: var(--secondary); }
     </style>
 </head>
 <body>
@@ -234,15 +242,16 @@
     <div id="lead-modal">
         <div class="modal-content">
             <h2 style="color: white; margin-bottom: 10px; letter-spacing: 2px;">EMPIRE DETECTED</h2>
-            <p style="margin-bottom: 20px; font-size: 0.85rem; opacity: 0.7;">Your velocity has reached Tier-1. Sync your dataset to unlock growth.</p>
+            <p style="margin-bottom: 20px; font-size: 0.85rem; opacity: 0.7;">Your velocity has reached Tier-1. Sync your dataset to unlock growth insights.</p>
             <input type="text" id="l-name" placeholder="ORGANIZATION NAME">
             <input type="email" id="l-email" placeholder="EXECUTIVE EMAIL">
             <button class="btn-submit" onclick="submitLead()">SYNC DATASET</button>
-            <p onclick="closeModal()" style="margin-top: 20px; font-size: 0.7rem; cursor: pointer; opacity: 0.4;">BYPASS SYNC</p>
+            <p onclick="closeModal()" style="margin-top: 20px; font-size: 0.7rem; cursor: pointer; opacity: 0.4;">BYPASS SYNC (DISCARD PROGRESS)</p>
         </div>
     </div>
 
     <script>
+        // YOUR CONFIGURATION
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOt-w7ItlqJm9BMJY95_2M2r85WUwz4rmSk0Rr1Ig68Lgd0tDs0xWhRtcNkUu4UVwNeA/exec";
 
         let state = {
@@ -255,11 +264,11 @@
         };
 
         const upgrades = [
-            { id: 1, name: "Product Selection AI", cost: 15, profit: 1, type: 'auto' },
-            { id: 2, name: "Buybox Logic Script", cost: 120, profit: 6, type: 'auto' },
-            { id: 3, name: "Inventory Accelerator", cost: 600, profit: 3, type: 'click' },
-            { id: 4, name: "Omnichannel Fulfillment", cost: 1800, profit: 35, type: 'auto' },
-            { id: 5, name: "Predictive Demand Engine", cost: 7500, profit: 150, type: 'auto' }
+            { id: 1, name: "Product Selection AI", cost: 15, profit: 1 },
+            { id: 2, name: "Buybox Logic Script", cost: 120, profit: 6 },
+            { id: 3, name: "Inventory Accelerator", cost: 600, profit: 25 }, 
+            { id: 4, name: "Omnichannel Fulfillment", cost: 1800, profit: 80 },
+            { id: 5, name: "Predictive Demand Engine", cost: 7500, profit: 250 }
         ];
 
         async function ghostPing(status, email = "Anonymous") {
@@ -267,9 +276,13 @@
                 fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    body: JSON.stringify({ email: email, name: status, revenue: Math.floor(state.revenue) })
+                    body: JSON.stringify({ 
+                        email: email, 
+                        name: status, 
+                        revenue: Math.floor(state.revenue) 
+                    })
                 });
-            } catch (e) {}
+            } catch (e) { console.warn("Sync Interrupted"); }
         }
 
         function format(n) { return n >= 1000 ? (n/1000).toFixed(1) + 'k' : Math.floor(n); }
@@ -284,48 +297,40 @@
                 else el.classList.add('disabled');
             });
 
+            // Ghost Ping at $100
             if (state.revenue >= 100 && !state.hasPingedActive) {
-                ghostPing("Active CEO Engaged");
+                ghostPing("Active Executive Engaged");
                 state.hasPingedActive = true;
             }
 
+            // Lead Modal at $1,000
             if (state.revenue >= 1000 && !state.leadCaptured) {
                 document.getElementById('lead-modal').classList.add('active');
                 state.leadCaptured = true;
             }
         }
 
-        async function submitLead() {
-            const name = document.getElementById('l-name').value;
-            const email = document.getElementById('l-email').value;
-            if(!email) return alert("Email Required");
-            ghostPing(`CEO_SYNC: ${name}`, email);
-            document.getElementById('lead-modal').classList.remove('active');
-        }
-
-        function closeModal() { document.getElementById('lead-modal').classList.remove('active'); }
-
+        // Setup Upgrades
         const upgBox = document.getElementById('upgrades');
         upgrades.forEach(u => {
             const d = document.createElement('div');
             d.className = 'upgrade-card disabled';
             d.id = `u-${u.id}`;
             d.innerHTML = `<span class="upgrade-name">${u.name}</span><span class="upgrade-cost" id="c-${u.id}">INVEST: $${u.cost}</span>`;
-            d.onclick = (e) => {
-                e.stopPropagation();
+            
+            d.addEventListener('click', () => {
                 if (state.revenue >= u.cost) {
                     state.revenue -= u.cost;
-                    if(u.type === 'auto') state.perSec += u.profit;
-                    else state.perClick += u.profit;
-                    u.cost = Math.floor(u.cost * 1.4);
+                    state.perSec += u.profit; 
+                    u.cost = Math.floor(u.cost * 1.45);
                     document.getElementById(`c-${u.id}`).textContent = `INVEST: $${u.cost}`;
                     updateUI();
                 }
-            };
+            });
             upgBox.appendChild(d);
         });
 
-        // Optimized Click Handler
+        // Click Handler (Multi-touch support)
         const clicker = document.getElementById('main-clicker');
         const handleAction = (e) => {
             e.preventDefault();
@@ -350,10 +355,22 @@
         clicker.addEventListener('touchstart', handleAction, {passive: false});
         clicker.addEventListener('mousedown', handleAction);
 
+        // Revenue Loop
         setInterval(() => {
             state.revenue += (state.perSec / 10);
             updateUI();
         }, 100);
+
+        async function submitLead() {
+            const name = document.getElementById('l-name').value;
+            const email = document.getElementById('l-email').value;
+            if(!email) return alert("Executive Email Required");
+            ghostPing(`EXECUTIVE_SYNC: ${name}`, email);
+            document.getElementById('lead-modal').classList.remove('active');
+            alert("Dataset Synced.");
+        }
+
+        function closeModal() { document.getElementById('lead-modal').classList.remove('active'); }
     </script>
 </body>
 </html>
