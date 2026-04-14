@@ -20,7 +20,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
         
-        /* 1. LIQUID ASMR BACKGROUND */
+        /* VIBE LIQUID BACKGROUND */
         body {
             color: #f8fafc;
             height: 100vh;
@@ -31,21 +31,30 @@
             animation: liquidGradient 15s ease infinite;
         }
 
-        @keyframes liquidGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes liquidGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         #market-ticker { position: fixed; top: 0; width: 100%; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); padding: 12px; font-size: 0.75rem; color: var(--neon); white-space: nowrap; overflow: hidden; z-index: 1000; font-family: monospace; }
         .ticker-content { display: inline-block; padding-left: 100%; animation: ticker 40s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-200%, 0, 0); } }
 
-        /* 2. GLASSMORPHISM SIDEBAR */
-        #sidebar { width: 340px; background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-right: 1px solid var(--glass-border); padding: 80px 20px 20px; display: flex; flex-direction: column; z-index: 100; overflow-y: auto; box-shadow: 20px 0 50px rgba(0,0,0,0.3); }
+        /* FIXED SIDEBAR OVERLAP */
+        #sidebar { 
+            width: 340px; 
+            flex-shrink: 0; /* Prevents overlap */
+            background: var(--glass-bg); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px); 
+            border-right: 1px solid var(--glass-border); 
+            padding: 80px 20px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 100; 
+            overflow-y: auto; 
+            box-shadow: 20px 0 50px rgba(0,0,0,0.3); 
+        }
         h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; color: var(--primary); text-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
         
-        .upgrade-card { background: rgba(2, 6, 23, 0.5); padding: 18px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        .upgrade-card { background: rgba(2, 6, 23, 0.5); padding: 18px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
         .upgrade-card:hover:not(.disabled) { border-color: var(--neon); background: rgba(99, 102, 241, 0.1); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .upgrade-card:active:not(.disabled) { transform: translateY(0) scale(0.98); }
         .upgrade-card.disabled { opacity: 0.2; cursor: not-allowed; }
@@ -53,52 +62,49 @@
         .upgrade-name { font-weight: 600; font-size: 0.95rem; display: block; color: #fff; margin-bottom: 4px; }
         .upgrade-cost { font-size: 0.75rem; color: var(--success); font-family: monospace; letter-spacing: 1px; }
 
-        #game-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding-top: 40px; }
-        #stats { text-align: center; margin-bottom: 50px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        #revenue { font-size: clamp(4rem, 10vw, 7rem); font-weight: 900; letter-spacing: -4px; color: #fff; line-height: 1; }
+        #game-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding-top: 40px; min-width: 0; }
+        #stats { text-align: center; margin-bottom: 50px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none; }
+        #revenue { font-size: clamp(4rem, 8vw, 7rem); font-weight: 900; letter-spacing: -4px; color: #fff; line-height: 1; }
         #per-sec { color: var(--neon); font-family: monospace; font-size: 1rem; margin-top: 15px; letter-spacing: 2px; }
 
-        /* 3. MAGNETIC CLICKER & PULSE */
-        #main-clicker-container { position: relative; width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; perspective: 1000px; }
+        /* BULLETPROOF CLICKER */
         #main-clicker { 
+            position: relative;
+            overflow: hidden;
             width: 240px; height: 240px; 
             background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
             border: 2px solid rgba(168, 85, 247, 0.5);
             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
             cursor: pointer; 
-            transition: transform 0.1s, box-shadow 0.3s;
+            transition: transform 0.1s;
             box-shadow: 0 0 40px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.2); 
             z-index: 5;
-            /* The base pulse */
             animation: idlePulse 3s infinite ease-in-out;
         }
-        
         @keyframes idlePulse {
             0%, 100% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.2); }
             50% { box-shadow: 0 0 60px rgba(99, 102, 241, 0.4), inset 0 0 40px rgba(168, 85, 247, 0.4); }
         }
 
-        #main-clicker img { width: 120px; pointer-events: none; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition: transform 0.3s; }
-        #main-clicker:active { transform: scale(0.9) !important; border-color: var(--neon); }
+        #main-clicker img { width: 120px; pointer-events: none; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition: transform 0.1s; }
+        #main-clicker:active { transform: scale(0.92); border-color: var(--neon); }
         #main-clicker:active img { transform: scale(0.95); }
 
-        /* 4. HAPTIC RIPPLES */
+        /* CLEAN HAPTIC RIPPLE */
         .ripple {
             position: absolute;
             border-radius: 50%;
-            border: 2px solid var(--neon);
+            background: rgba(168, 85, 247, 0.4);
             transform: translate(-50%, -50%) scale(0);
-            animation: rippleAnim 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            animation: rippleAnim 0.5s ease-out forwards;
             pointer-events: none;
-            z-index: 4;
         }
         @keyframes rippleAnim {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; border-width: 4px; }
-            100% { transform: translate(-50%, -50%) scale(4); opacity: 0; border-width: 0px; }
+            to { transform: translate(-50%, -50%) scale(4); opacity: 0; }
         }
 
-        .float-text { position: absolute; pointer-events: none; color: #fff; text-shadow: 0 0 10px var(--neon); font-weight: 900; font-size: 1.4rem; z-index: 1000; animation: floatUp 0.8s ease-out forwards; }
-        @keyframes floatUp { 0% { transform: translate3d(-50%, 0, 0) scale(1); opacity: 1; } 100% { transform: translate3d(-50%, -120px, 0) scale(1.5); opacity: 0; } }
+        .float-text { position: fixed; pointer-events: none; color: #fff; text-shadow: 0 0 10px var(--neon); font-weight: 900; font-size: 1.5rem; z-index: 1000; animation: floatUp 0.8s ease-out forwards; }
+        @keyframes floatUp { 0% { transform: translate(-50%, 0) scale(1); opacity: 1; } 100% { transform: translate(-50%, -100px) scale(1.5); opacity: 0; } }
 
         /* MODAL */
         #lead-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
@@ -125,11 +131,11 @@
     <div id="game-area">
         <div id="stats"><div id="revenue">$0</div><div id="per-sec">NET VELOCITY: $0 / SEC</div></div>
         
-        <div id="main-clicker-container">
-            <div id="main-clicker"><img src="https://cdn-icons-png.flaticon.com/512/679/679821.png"></div>
+        <div id="main-clicker">
+            <img src="https://cdn-icons-png.flaticon.com/512/679/679821.png" alt="Box">
         </div>
         
-        <div style="margin-top: 80px; opacity: 0.2; font-size: 0.65rem; letter-spacing: 8px; font-weight: 900;">GLOBAL E-COMMERCE COMMAND</div>
+        <div style="margin-top: 80px; opacity: 0.2; font-size: 0.65rem; letter-spacing: 8px; font-weight: 900; text-align: center;">GLOBAL E-COMMERCE COMMAND</div>
     </div>
 
     <div id="lead-modal"><div class="modal-content">
@@ -141,7 +147,7 @@
     </div></div>
 
     <script>
-        // PASTE YOUR NEW WEB APP URL HERE
+        // PASTE YOUR WEB APP URL HERE
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAm1pYLVPWGv7zPjn5HIvyPNfVTObumMK9Di4lUiEHGI1Xxuo3Q7CO3A-xJiwOkAfJvg/exec";
 
         let state = { revenue: 0, perClick: 10, perSec: 0, leadCaptured: false, hasPinged: false };
@@ -171,3 +177,77 @@
             
             upgrades.forEach(u => {
                 const el = document.getElementById(`u-${u.id}`);
+                if (state.revenue >= u.cost) el.classList.remove('disabled');
+                else el.classList.add('disabled');
+            });
+            
+            if (state.revenue >= 100 && !state.hasPinged) { ghostPing("Active Executive"); state.hasPinged = true; }
+            if (state.revenue >= 1000 && !state.leadCaptured) { document.getElementById('lead-modal').classList.add('active'); state.leadCaptured = true; }
+        }
+
+        // Render Upgrades
+        upgrades.forEach(u => {
+            const d = document.createElement('div');
+            d.className = 'upgrade-card disabled'; d.id = `u-${u.id}`;
+            d.innerHTML = `<span class="upgrade-name">${u.name}</span><span class="upgrade-cost" id="c-${u.id}">INVEST: $${u.cost}</span>`;
+            d.onclick = () => { 
+                if (state.revenue >= u.cost) { 
+                    state.revenue -= u.cost; 
+                    state.perSec += u.profit; 
+                    u.cost = Math.floor(u.cost * 1.45); 
+                    updateUI(); 
+                } 
+            };
+            document.getElementById('upgrades').appendChild(d);
+        });
+
+        // BULLETPROOF CLICK HANDLER
+        const clicker = document.getElementById('main-clicker');
+        
+        clicker.onclick = function(e) {
+            state.revenue += state.perClick;
+            
+            // Haptic Ripple
+            const rect = clicker.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            clicker.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 500);
+
+            // Floating +$10 Text
+            const t = document.createElement('div');
+            t.className = 'float-text';
+            t.style.left = e.clientX + 'px';
+            t.style.top = e.clientY + 'px';
+            t.textContent = `+$${state.perClick}`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 800);
+            
+            updateUI();
+        };
+
+        // Core Loop
+        setInterval(() => { state.revenue += (state.perSec / 10); updateUI(); }, 100);
+
+        function submitLead() {
+            const n = document.getElementById('l-name').value;
+            const e = document.getElementById('l-email').value;
+            if(e) { 
+                ghostPing("LEAD: " + n, e); 
+                document.getElementById('lead-modal').classList.remove('active'); 
+                
+                // Final UX reward
+                document.getElementById('revenue').style.color = 'var(--neon)';
+                document.getElementById('revenue').style.textShadow = '0 0 30px var(--neon)';
+                alert("Dataset Synced. Command Authorized."); 
+            }
+        }
+        function closeModal() { document.getElementById('lead-modal').classList.remove('active'); }
+    </script>
+</body>
+</html>
